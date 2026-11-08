@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Корзина — PepStore.lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div data-header></div>
+
+  <main class="container cart-layout">
+    <section>
+      <h1 style="font-size:26px">Корзина</h1>
+      <div id="items"></div>
+      <p class="catalog-empty" id="empty">
+        Корзина пуста. <a href="catalog.html">Перейти в каталог</a>
+      </p>
+    </section>
+
+    <aside class="summary" id="summary" style="display:none">
+      <h3>Ваш заказ</h3>
+      <div class="sum-row"><span>Товары</span><span id="sCount"></span></div>
+      <div class="sum-row"><span>Доставка</span><span>уточняется</span></div>
+      <div class="sum-total">Итого: <span id="sTotal"></span></div>
+
+      <div class="order-form">
+        <div>
+          <label>Ваше имя *</label>
+          <input id="fName" required>
+        </div>
+        <div>
+          <label>Телефон или Telegram *</label>
+          <input id="fContact" required placeholder="+7 … или @username">
+        </div>
+        <div>
+          <label>Город / пункт выдачи</label>
+          <input id="fCity">
+        </div>
+        <div>
+          <label>Комментарий</label>
+          <textarea id="fComment" rows="3"></textarea>
+        </div>
+      </div>
+
+      <p class="note" style="margin:14px 0 8px">Нажмите кнопку — сообщение с заказом откроется в мессенджере, останется только отправить.</p>
+      <div class="send-row">
+        <button class="btn btn-wa" id="sendWa">Отправить в WhatsApp</button>
+        <button class="btn btn-tg" id="sendTg">Отправить в Telegram</button>
+        <button class="btn btn-line" id="sendMail">Email</button>
+      </div>
+      <button class="btn btn-line" id="clearCart" style="margin-top:10px;width:100%">Очистить корзину</button>
+    </aside>
+  </main>
+
+  <div data-footer></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const itemsEl = document.getElementById("items");
+      const emptyEl = document.getElementById("empty");
+      const sumEl = document.getElementById("summary");
+
+      function render() {
+        const items = window.Shop.cartItems();
+        emptyEl.style.display = items.length ? "none" : "block";
+        sumEl.style.display = items.length ? "block" : "none";
+        if (!items.length) { itemsEl.innerHTML = ""; return; }
+
+        itemsEl.innerHTML = items.map((it) => `
+          <div class="cart-item">
+            <img src="${it.product.image}" alt="${it.product.name}" onerror="this.style.visibility='hidden'">
+            <div>
+              <div class="ci-name">${it.product.name}</div>
+              <div class="ci-vol">${it.volume ? "Дозировка: " + it.volume : ""}</div>
+              <div class="ci-price">${window.Shop.format(it.product.price)}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+              <input class="qty" type="number" min="1" value="${it.qty}" onchange="window.Shop.setQty('${it.id}','${it.volume || ""}', parseInt(this.value,10)||1);renderAgain()">
+              <button class="ci-remove" onclick="window.Shop.removeItem('${it.id}','${it.volume || ""}');renderAgain()">Удалить</button>
+            </div>
+          </div>`).join("");
+        document.getElementById("sCount").textContent = window.Shop.cartCount() + " шт.";
+        document.getElementById("sTotal").textContent = window.Shop.format(window.Shop.cartTotal());
+      }
+
+      window.renderAgain = render;
+      render();
+
+      function orderMessage() {
+        const name = document.getElementById("fName").value.trim();
+        const contact = document.getElementById("fContact").value.trim();
+        const city = document.getElementById("fCity").value.trim();
+        const comment = document.getElementById("fComment").value.trim();
+        let msg = "Здравствуйте! Новый заказ на сайте " + window.SITE.name + ":\n" + window.Shop.orderMessage();
+        if (name) msg += "\nИмя: " + name;
+        if (contact) msg += "\nКонтакт: " + contact;
+        if (city) msg += "\nГород: " + city;
+        if (comment) msg += "\nКомментарий: " + comment;
+        return msg;
+      }
+
+      function ready() {
+        if (!document.getElementById("fName").value.trim() || !document.getElementById("fContact").value.trim()) {
+          window.Shop.toast("Заполните имя и контакт");
+          return false;
+        }
+        return true;
+      }
+
+      document.getElementById("sendWa").addEventListener("click", () => {
+        if (ready()) window.Shop.openMessenger("wa", orderMessage());
+      });
+      document.getElementById("sendTg").addEventListener("click", () => {
+        if (ready()) window.Shop.openMessenger("tg", orderMessage());
+      });
+      document.getElementById("sendMail").addEventListener("click", () => {
+        if (ready()) window.Shop.openMessenger("mail", orderMessage());
+      });
+      document.getElementById("clearCart").addEventListener("click", () => {
+        window.Shop.clearCart();
+        render();
+        window.Shop.toast("Корзина очищена");
+      });
+    });
+  </script>
+</body>
+</html>

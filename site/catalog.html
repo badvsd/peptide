@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог — PepStore.lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div data-header></div>
+
+  <main class="container catalog-layout">
+    <aside class="sidebar">
+      <h3>Категории</h3>
+      <ul class="cat-list" id="catList"></ul>
+      <input class="search" id="search" type="search" placeholder="Поиск по каталогу…">
+      <label class="note" style="display:block;margin-top:8px">Найдено: <b id="count"></b></label>
+    </aside>
+
+    <section>
+      <div class="sort-row">
+        <h1 style="margin:0;font-size:24px">Каталог пептидов</h1>
+        <select id="sort" style="margin-left:auto">
+          <option value="pop">Популярные</option>
+          <option value="az">По алфавиту А-Я</option>
+          <option value="za">По алфавиту Я-А</option>
+          <option value="asc">Сначала дешевле</option>
+          <option value="desc">Сначала дороже</option>
+        </select>
+      </div>
+      <div class="product-grid" id="grid"></div>
+      <p class="catalog-empty" id="empty" style="display:none">Ничего не найдено. Попробуйте изменить запрос или попробуйте услугу байера — <a href="buyer.html">найти препарат под заказ</a>.</p>
+    </section>
+  </main>
+
+  <div data-footer></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(location.search);
+      let cat = params.get("cat") || "all";
+      let q = params.get("q") || "";
+      const products = window.CATALOG.products;
+      const cats = window.CATALOG.categories;
+
+      const catList = document.getElementById("catList");
+      const search = document.getElementById("search");
+      const sort = document.getElementById("sort");
+      const grid = document.getElementById("grid");
+      const empty = document.getElementById("empty");
+      const countEl = document.getElementById("count");
+      search.value = q;
+
+      function renderCats() {
+        const allN = products.length;
+        catList.innerHTML =
+          `<li><a href="catalog.html" class="${cat === "all" ? "active" : ""}">Все товары <span class="cnt">${allN}</span></a></li>` +
+          cats.map((c) => {
+            const n = products.filter((p) => p.category === c.slug).length;
+            return `<li><a href="catalog.html?cat=${c.slug}" class="${cat === c.slug ? "active" : ""}">${c.name} <span class="cnt">${n}</span></a></li>`;
+          }).join("");
+      }
+
+      function card(p) {
+        return `
+        <div class="product-card">
+          <a class="pc-img" href="product.html?id=${p.id}">
+            <span class="pc-badges">${p.badges.map((b) => `<span class="badge-${b === "Хит" ? "hit" : "new"}">${b}</span>`).join("")}</span>
+            <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e3ece9%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%229%22 fill=%22%2360757a%22%3ENo image%3C/text%3E%3C/svg%3E'">
+          </a>
+          <div class="pc-body">
+            <a class="pc-name" href="product.html?id=${p.id}">${p.name}</a>
+            <span class="pc-cat">${(cats.find((c) => c.slug === p.category) || {}).name || ""}</span>
+            ${p.volumes.length ? `<span class="pc-vols">Дозировки: ${p.volumes.slice(0, 5).join(", ")}${p.volumes.length > 5 ? "…" : ""}</span>` : ""}
+            <div class="pc-price">${window.Shop.format(p.price)}</div>
+            <span class="stock ${p.stock === "in" ? "stock-in" : "stock-out"}">${p.stock === "in" ? "В наличии" : "Под заказ"}</span>
+            <div class="pc-actions">
+              <button class="btn btn-primary" onclick="window.Shop.addToCart('${p.id}','',1);window.Shop.toast('Добавлено в корзину')">В корзину</button>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      function apply() {
+        let list = products.slice();
+        if (cat !== "all") list = list.filter((p) => p.category === cat);
+        q = (search.value || "").trim().toLowerCase();
+        if (q) {
+          list = list.filter((p) =>
+            (p.name + " " + ((cats.find((c) => c.slug === p.category) || {}).name || "")).toLowerCase().includes(q));
+        }
+        const sortVal = sort.value;
+        if (sortVal === "az") list.sort((a, b) => a.name.localeCompare(b.name, "ru"));
+        else if (sortVal === "za") list.sort((a, b) => b.name.localeCompare(a.name, "ru"));
+        else if (sortVal === "asc") list.sort((a, b) => (a.price || 0) - (b.price || 0));
+        else if (sortVal === "desc") list.sort((a, b) => (b.price || 0) - (a.price || 0));
+        else list.sort((a, b) => (b.badges.includes("Хит") ? 1 : 0) - (a.badges.includes("Хит") ? 1 : 0));
+
+        grid.innerHTML = list.map(card).join("");
+        empty.style.display = list.length ? "none" : "block";
+        countEl.textContent = list.length;
+      }
+
+      renderCats();
+      apply();
+      search.addEventListener("input", apply);
+      sort.addEventListener("change", apply);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "pepstore",
+  "version": "1.0.0",
+  "description": "PepStore.lab - статический интернет-магазин исследовательских пептидов",
+  "private": true,
+  "scripts": {
+    "start": "serve . -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}

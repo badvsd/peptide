@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PepStore.lab — исследовательские пептиды и продукция для здоровья</title>
+  <meta name="description" content="Исследовательские пептиды, биорегуляторы и продукция для здоровья с доставкой по России. Услуга подбора и заказа препаратов (услуга байера).">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div data-header></div>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <span class="hero-badge">Только для исследовательских целей · 18+</span>
+        <h1>Исследовательские пептиды</h1>
+        <p id="heroText">Современные биорегуляторные вещества с проверенной чистотой, доставка по России и ближнему зарубежью. Поможем подобрать препарат, проверим поставщика и закажем его для вас — как в розницу, так и под ваш запрос.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="catalog.html">Перейти в каталог</a>
+          <a class="btn btn-ghost btn-lg" href="buyer.html">Найти препарат под заказ</a>
+        </div>
+      </div>
+      <div class="feature-strip">
+        <div class="feature"><b>Доставка</b><span>Быстрая и аккуратная по России</span></div>
+        <div class="feature"><b>Цена</b><span>Работаем без лишних посредников</span></div>
+        <div class="feature"><b>Качество</b><span>Проверенные поставщики и чистоты</span></div>
+        <div class="feature"><b>Эффективность</b><span>Подтверждённые свойства продукции</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Каталог</h2>
+        <a class="link" href="catalog.html">Весь каталог →</a>
+      </div>
+      <div class="cat-grid" id="catTiles"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Рекомендуемые покупки</h2>
+        <a class="link" href="catalog.html">Смотреть все →</a>
+      </div>
+      <div class="product-grid" id="hitGrid"></div>
+    </section>
+
+    <section class="section" style="padding-top: 40px">
+      <div class="product-grid" id="recoGrid"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Услуга байера — найдём препарат под заказ</h2>
+      </div>
+      <div class="page-card" style="display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center">
+        <div>
+          <p>Нужного препарата нет в каталоге или нужна минимальная партия под ваш проект? Мы работаем с поставщиками в России, Китае и Индии (IndiaMART, TradeIndia, ExportersIndia и др.): проверяем наличие, сверяем цены и условия, подбираем оптимального поставщика и заказываем для вас.</p>
+          <ul class="info-list">
+            <li>Подбор препарата по названию, дозировке и стране производителя</li>
+            <li>Проверка поставщиков и сравнение цен</li>
+            <li>Работа как с розничными, так и с оптовыми заказами</li>
+            <li>Оплата и доставка через проверенные каналы</li>
+          </ul>
+          <p style="margin-top:18px"><a class="btn btn-primary" href="buyer.html">Оставить запрос на препарат</a></p>
+        </div>
+        <div style="background:var(--primary-soft);border-radius:14px;padding:26px;text-align:center">
+          <div style="font-size:44px">🔎</div>
+          <h3 style="margin:10px 0">Не нашли нужное?</h3>
+          <p style="color:var(--muted)">Оставьте название препарата — менеджер ответит ценой и сроками в выбранном мессенджере.</p>
+          <a class="btn btn-wa" href="https://wa.me/" style="pointer-events:none">WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Отзывы покупателей</h2>
+        <a class="link" href="#reviews">Читать все →</a>
+      </div>
+      <div class="review-grid" id="reviewGrid"></div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="section-head"><h2>Частые вопросы</h2></div>
+      <div class="faq">
+        <details open>
+          <summary>Что такое пептиды?</summary>
+          <p>Пептиды — короткие цепочки аминокислот, которые изучаются как биорегуляторные вещества для поддержки различных функций организма. На этом сайте они представлены исключительно для исследовательских целей.</p>
+        </details>
+        <details>
+          <summary>Как сделать заказ?</summary>
+          <p>Добавьте товары в корзину, оформите заявку — сообщение уйдёт менеджеру в мессенджер. Менеджер подтвердит наличие, уточнит стоимость доставки и согласует оплату.</p>
+        </details>
+        <details>
+          <summary>Как оплатить?</summary>
+          <p>Оплата по согласованию с менеджером: карта, СБП, перевод или по реквизитам для юридических лиц. Подробнее — на странице «Доставка и оплата».</p>
+        </details>
+        <details>
+          <summary>Как заказать препарат, которого нет в каталоге?</summary>
+          <p>Воспользуйтесь услугой байера: заполните форму с названием препарата, дозировкой и количеством. Мы найдём поставщика, сообщим цену и сроки.</p>
+        </details>
+        <details>
+          <summary>Это лекарство?</summary>
+          <p>Нет. Вся продукция и информация носят образовательный характер и предназначены для исследовательских целей. Перед любым применением проконсультируйтесь со специалистом.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" id="reviews">
+      <div class="section-head"><h2>О компании</h2></div>
+      <div class="page-card">
+        <p>Мы занимаемся дистрибуцией и подбором исследовательских пептидов и биорегуляторных веществ. Наша цель — чтобы клиент всегда получал проверенный продукт по адекватной цене: поэтому мы сравниваем поставщиков (включая площадки Индии и Китая), проверяем документы и соблюдаем условия хранения и доставки.</p>
+        <p>Выбирая нас, вы выбираете прозрачность, качество и заботу о соблюдении правил. Для любых вопросов — колл-центр и мессенджеры ежедневно.</p>
+        <p><a class="btn btn-line" href="about.html">Подробнее о компании</a></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Остались вопросы?</h2></div>
+      <div class="page-card">
+        <p>Напишите нам в удобный мессенджер — ответим в течение рабочего времени (10:00–20:00).</p>
+        <div class="send-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+          <a class="btn btn-tg" href="#" id="tgLinkBig">Telegram</a>
+          <a class="btn btn-wa" href="#" id="waLinkBig">WhatsApp</a>
+          <a class="btn btn-line" href="mailto:" id="mailLinkBig">Email</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div data-footer></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const products = window.CATALOG.products;
+
+      /* Категории */
+      const tiles = document.getElementById("catTiles");
+      if (tiles) {
+        tiles.innerHTML = window.CATALOG.categories.map((c) => {
+          const n = products.filter((p) => p.category === c.slug).length;
+          return `<a class="cat-tile" href="catalog.html?cat=${c.slug}">
+                    ${c.name}<span class="n">${n} товар${n === 1 ? "" : n < 5 ? "а" : "ов"}</span>
+                  </a>`;
+        }).join("");
+      }
+
+      /* Карточка товара */
+      const card = (p) => `
+        <div class="product-card">
+          <a class="pc-img" href="product.html?id=${p.id}">
+            <span class="pc-badges">${p.badges.map((b) => `<span class="badge-${b === "Хит" ? "hit" : "new"}">${b}</span>`).join("")}</span>
+            <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e3ece9%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%229%22 fill=%22%2360757a%22%3ENo image%3C/text%3E%3C/svg%3E'">
+          </a>
+          <div class="pc-body">
+            <a class="pc-name" href="product.html?id=${p.id}">${p.name}</a>
+            <span class="pc-cat">${(window.CATALOG.categories.find((c) => c.slug === p.category) || {}).name || ""}</span>
+            <div class="pc-price">${window.Shop.format(p.price)}</div>
+            <span class="stock ${p.stock === "in" ? "stock-in" : "stock-out"}">${p.stock === "in" ? "В наличии" : "Под заказ"}</span>
+            <div class="pc-actions">
+              <button class="btn btn-primary" onclick="window.Shop.addToCart('${p.id}','',1);window.Shop.toast('Добавлено в корзину')">В корзину</button>
+            </div>
+          </div>
+        </div>`;
+
+      /* Хиты */
+      const hits = products.filter((p) => p.badges.includes("Хит")).slice(0, 8);
+      const hitGrid = document.getElementById("hitGrid");
+      if (hitGrid) hitGrid.innerHTML = hits.map(card).join("") || "<p class='catalog-empty'>Пока нет товаров</p>";
+
+      /* Новинки/прочее */
+      const first = (window.CATALOG.categories[0] || {}).slug || "";
+      const reco = products.filter((p) => !hits.includes(p)).slice(0, 8);
+      const recoGrid = document.getElementById("recoGrid");
+      if (recoGrid) recoGrid.innerHTML = reco.map(card).join("") || "";
+
+      /* Отзывы (демо) */
+      const reviews = [
+        { author: "Алексей", date: "12.09.2026", stars: "★★★★★", text: "Быстро нашли препарат, которого не было на сайте, по адекватной цене. Доставка СДЭК всё в сохранности." },
+        { author: "Мария", date: "03.09.2026", stars: "★★★★★", text: "Заказывала через услугу байера. Менеджер предложил двух поставщиков с разными ценами, помог выбрать." },
+        { author: "Дмитрий", date: "21.08.2026", stars: "★★★★☆", text: "Качество устроило, упаковка нормальная. Небольшая задержка на складе, но предупредили заранее." },
+      ];
+      const reviewGrid = document.getElementById("reviewGrid");
+      if (reviewGrid) {
+        reviewGrid.innerHTML = reviews.map((r) => `
+          <div class="review">
+            <div class="stars">${r.stars}</div>
+            <p>${r.text}</p>
+            <div class="author">${r.author}</div>
+            <div class="date">${r.date}</div>
+          </div>`).join("");
+      }
+
+      const S = window.SITE;
+      document.getElementById("tgLinkBig") && (document.getElementById("tgLinkBig").href = "https://t.me/" + S.telegram);
+      document.getElementById("waLinkBig") && (document.getElementById("waLinkBig").href = "https://wa.me/" + S.whatsapp);
+      document.getElementById("mailLinkBig") && (document.getElementById("mailLinkBig").href = "mailto:" + S.email);
+    });
+  </script>
+</body>
+</html>

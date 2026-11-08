@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Политика конфиденциальности — PepStore.lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div data-header></div>
+
+  <main class="container page">
+    <h1>Политика конфиденциальности</h1>
+
+    <div class="page-card">
+      <h2>Какие данные мы собираем</h2>
+      <p>При обращении через формы сайта (заказ, услуга байера, форма связи) вы добровольно передаёте: имя, контакт (телефон, мессенджер или email) и текст сообщения. Данные хранятся только в объёме, необходимом для обработки обращения, и не передаются третьим лицам, кроме случаев, предусмотренных законом.</p>
+    </div>
+
+    <div class="page-card">
+      <h2>Для чего используются данные</h2>
+      <ul class="info-list">
+        <li>Обработка и подтверждение заказов</li>
+        <li>Подбор препаратов по услуге байера</li>
+        <li>Ответы на обращения и консультации</li>
+        <li>Улучшение качества обслуживания</li>
+      </ul>
+    </div>
+
+    <div class="page-card">
+      <h2>Хранение и защита</h2>
+      <p>Передача данных происходит по защищённым каналам. Сайт не использует сторонние платёжные формы, данные карт мы не собираем. Вы можете запросить удаление своих данных, написав на <span id="privacyMail">—</span>.</p>
+    </div>
+
+    <div class="page-card">
+      <h2>Согласие</h2>
+      <p>Отправляя форму на сайте, вы подтверждаете согласие с настоящей политикой и принимаете, что информация о продукции носит исследовательский характер.</p>
+    </div>
+  </main>
+
+  <div data-footer></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("privacyMail").textContent = window.SITE.email;
+    });
+  </script>
+</body>
+</html>

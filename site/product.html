@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Товар — PepStore.lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div data-header></div>
+
+  <main class="container">
+    <div class="product-layout" id="layout" style="display:none">
+      <div class="product-gallery">
+        <img id="pImg" alt="">
+      </div>
+      <div class="product-info">
+        <div id="pBadges"></div>
+        <h1 id="pName"></h1>
+        <div class="product-meta" id="pCat"></div>
+        <div class="price-line" id="pPrice"></div>
+        <span class="stock" id="pStock"></span>
+
+        <div class="opt-block" id="pVolBlock" style="display:none">
+          <span class="opt-label">Дозировка / объём</span>
+          <div class="chips" id="pVols"></div>
+        </div>
+
+        <div class="opt-block">
+          <span class="opt-label">Количество</span>
+          <input class="qty" id="pQty" type="number" min="1" value="1">
+        </div>
+
+        <div class="product-actions">
+          <button class="btn btn-primary btn-lg" id="pBuy">В корзину</button>
+          <a class="btn btn-line btn-lg" href="buyer.html?drug=" id="pBuyerLink">Заказать через байера</a>
+        </div>
+        <p class="note" style="margin-top:14px">Товар может отсутствовать на складе — менеджер уточнит наличие при оформлении заказа.</p>
+      </div>
+    </div>
+
+    <div class="product-desc" id="pDesc" style="display:none">
+      <h2>Описание</h2>
+      <div id="pDescText"></div>
+    </div>
+
+    <p class="catalog-empty" id="notFound">Товар не найден. <a href="catalog.html">Вернуться в каталог</a></p>
+  </main>
+
+  <div data-footer></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const id = new URLSearchParams(location.search).get("id");
+      const p = id ? window.Shop.findById(id) : null;
+      if (!p) {
+        document.getElementById("notFound").style.display = "block";
+        return;
+      }
+      const S = window.SITE;
+      document.title = p.name + " — " + S.name;
+
+      const layout = document.getElementById("layout");
+      const desc = document.getElementById("pDesc");
+      layout.style.display = "grid";
+      desc.style.display = "block";
+
+      document.getElementById("pImg").src = p.image;
+      document.getElementById("pImg").alt = p.name;
+      const catName = (window.CATALOG.categories.find((c) => c.slug === p.category) || {}).name || "";
+      document.getElementById("pBadges").innerHTML = p.badges.map((b) => `<span class="badge-${b === "Хит" ? "hit" : "new"}">${b}</span>`).join(" ");
+      document.getElementById("pName").textContent = p.name;
+      document.getElementById("pCat").textContent = "Категория: " + catName;
+      document.getElementById("pPrice").textContent = window.Shop.format(p.price);
+      document.getElementById("pStock").innerHTML = p.stock === "in"
+        ? '<span class="stock-in">✓ В наличии</span>'
+        : '<span class="stock-out">Под заказ — уточните сроки у менеджера</span>';
+
+      let volume = "";
+      if (p.volumes && p.volumes.length) {
+        const block = document.getElementById("pVolBlock");
+        const chips = document.getElementById("pVols");
+        block.style.display = "block";
+        chips.innerHTML = p.volumes.map((v, i) =>
+          `<button class="chip${i === 0 ? " selected" : ""}" data-v="${v}">${v}</button>`).join("");
+        volume = p.volumes[0];
+        chips.addEventListener("click", (e) => {
+          const b = e.target.closest(".chip");
+          if (!b) return;
+          volume = b.dataset.v;
+          chips.querySelectorAll(".chip").forEach((c) => c.classList.remove("selected"));
+          b.classList.add("selected");
+        });
+      }
+
+      document.getElementById("pBuy").addEventListener("click", () => {
+        const qty = Math.max(1, parseInt(document.getElementById("pQty").value, 10) || 1);
+        const msg = (p.name || p.name) + (volume ? " (" + volume + ")" : "");
+        window.Shop.addToCart(p.id, volume, qty);
+        window.Shop.toast("Добавлено: " + msg);
+      });
+
+      const buyerLink = document.getElementById("pBuyerLink");
+      buyerLink.href = "buyer.html?drug=" + encodeURIComponent(p.name);
+
+      const d = document.getElementById("pDescText");
+      d.innerHTML = (p.description || "").split(/\n+/).map((t) => t.trim()).filter(Boolean)
+        .map((t) => `<p>${t}</p>`).join("") || "<p>Описание уточняется.</p>";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Услуга байера — найдём и закажем препарат — PepStore.lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div data-header></div>
+
+  <main class="container page">
+    <h1>Услуга байера: препарат под заказ</h1>
+
+    <div class="page-card">
+      <p>Не нашли нужный препарат в каталоге? Заказываем позиции под запрос клиента: работаем напрямую с поставщиками в России, Китае и Индии (в том числе площадки IndiaMART, TradeIndia, ExportersIndia). Проверяем наличие, чистоту и документы, сравниваем цены и условия, а затем организуем заказ и доставку.</p>
+      <ul class="info-list">
+        <li><b>Подбор</b> — по международному непатентованному названию (INN), торговому или исследовательскому наименованию, дозировке.</li>
+        <li><b>Сверка поставщиков</b> — сравнение цен, минимальных партий, условий оплаты и сроков.</li>
+        <li><b>Проверка</b> — уточняем происхождение, чистоту, сертификаты (COA), условия хранения при транспортировке.</li>
+        <li><b>Заказ и доставка</b> — сопровождение по всей цепочке до получения вами товара.</li>
+      </ul>
+    </div>
+
+    <div class="page-grid" style="margin-top:4px">
+      <div class="page-card">
+        <h2>Как это работает</h2>
+        <ol style="padding-left:20px;line-height:2">
+          <li>Заполняете форму — указываете препарат и пожелания.</li>
+          <li>Менеджер ищет и сравнивает предложения (обычно 1–3 рабочих дня).</li>
+          <li>Получаете варианты: цена, срок, минимальная партия.</li>
+          <li>Согласуете, оплачиваете и получаете заказ.</li>
+        </ol>
+        <p class="note">Запрос ни к чему не обязывает. Конфиденциальность данных гарантирована — см. <a href="privacy.html">политику конфиденциальности</a>.</p>
+      </div>
+
+      <div class="page-card">
+        <h2>Запросить препарат</h2>
+        <form class="big-form" id="buyerForm">
+          <div class="form-row">
+            <div><label class="note">Ваше имя *</label>
+              <input id="bName" required placeholder="Как к вам обращаться"></div>
+            <div><label class="note">Контакт (телефон / Telegram) *</label>
+              <input id="bContact" required placeholder="+7 … или @username"></div>
+          </div>
+          <div><label class="note">Название препарата *</label>
+            <input id="bDrug" required placeholder="Например: TirzeSlim 5мг"></div>
+          <div class="form-row">
+            <div><label class="note">Дозировка / объём</label>
+              <input id="bDose" placeholder="5мг, 10мг/3мл…"></div>
+            <div><label class="note">Количество</label>
+              <input id="bQty" placeholder="1 шт., 10 флаконов…"></div>
+          </div>
+          <div><label class="note">Страна-производитель, площадка или ссылка (если есть)</label>
+            <input id="bSource" placeholder="China / IndiaMART / ссылка…"></div>
+          <div><label class="note">Комментарий</label>
+            <textarea id="bComment" rows="3" placeholder="Бюджет, срок, цели использования в исследовательских целях…"></textarea></div>
+          <p class="hint" style="margin:0">Отправляю запрос, я подтверждаю: мне есть 18 лет, информация носит исследовательский характер.</p>
+          <div class="send-row">
+            <button type="button" class="btn btn-wa btn-lg" id="bSendWa">Отправить в WhatsApp</button>
+            <button type="button" class="btn btn-tg btn-lg" id="bSendTg">Отправить в Telegram</button>
+          </div>
+          <div class="success-box hidden" id="bDone">Запрос сформирован. Выберите мессенджер, чтобы отправить его менеджеру.</div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div data-footer></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const drug = new URLSearchParams(location.search).get("drug");
+      if (drug) document.getElementById("bDrug").value = drug;
+
+      function message() {
+        const S = window.SITE;
+        const name = document.getElementById("bName").value.trim();
+        const contact = document.getElementById("bContact").value.trim();
+        const drug = document.getElementById("bDrug").value.trim();
+        const dose = document.getElementById("bDose").value.trim();
+        const qty = document.getElementById("bQty").value.trim();
+        const source = document.getElementById("bSource").value.trim();
+        const comment = document.getElementById("bComment").value.trim();
+        if (!name || !contact || !drug) { window.Shop.toast("Заполните имя, контакт и название препарата"); return null; }
+        let msg = "Здравствуйте! Запрос на подбор препарата (" + S.name + "):\nПрепарат: " + drug;
+        if (dose) msg += "\nДозировка: " + dose;
+        if (qty) msg += "\nКоличество: " + qty;
+        if (source) msg += "\nИсточник: " + source;
+        msg += "\nИмя: " + name + "\nКонтакт: " + contact;
+        if (comment) msg += "\nКомментарий: " + comment;
+        return msg;
+      }
+
+      document.getElementById("bSendWa").addEventListener("click", () => {
+        const m = message();
+        document.getElementById("bDone").classList.remove("hidden");
+        if (m) window.Shop.openMessenger("wa", m);
+      });
+      document.getElementById("bSendTg").addEventListener("click", () => {
+        const m = message();
+        document.getElementById("bDone").classList.remove("hidden");
+        if (m) window.Shop.openMessenger("tg", m);
+      });
+    });
+  </script>
+</body>
+</html>

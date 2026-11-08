@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты — PepStore.lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div data-header></div>
+
+  <main class="container page">
+    <h1>Контакты</h1>
+
+    <div class="page-grid">
+      <div class="page-card">
+        <h2>Свяжитесь с нами</h2>
+        <ul class="info-list">
+          <li>Телефон: <a id="cPhone" href="#">—</a></li>
+          <li>Email: <a id="cMail" href="#">—</a></li>
+          <li>Режим работы: <span id="cHours">—</span></li>
+          <li>Telegram: <a id="cTg" href="#" target="_blank" rel="noopener">t.me/—</a></li>
+          <li>WhatsApp: <a id="cWa" href="#" target="_blank" rel="noopener">wa.me/—</a></li>
+          <li>Канал новостей: <a id="cChannel" href="#" target="_blank" rel="noopener">t.me/—</a></li>
+        </ul>
+        <p class="note">Для заказов под заказ используйте отдельную форму — <a href="buyer.html">услуга байера</a>.</p>
+      </div>
+
+      <div class="page-card">
+        <h2>Написать нам</h2>
+        <form class="big-form" id="cForm">
+          <div><label class="note">Ваше имя *</label>
+            <input id="cName" required></div>
+          <div><label class="note">Контакт (телефон / Telegram / email) *</label>
+            <input id="cContact" required></div>
+          <div><label class="note">Сообщение *</label>
+            <textarea id="cText" rows="4" required></textarea></div>
+          <div class="send-row">
+            <button type="button" class="btn btn-tg" id="cSendTg">Отправить в Telegram</button>
+            <button type="button" class="btn btn-wa" id="cSendWa">WhatsApp</button>
+            <button type="button" class="btn btn-line" id="cSendMail">Email</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div data-footer></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const S = window.SITE;
+      const tel = S.phones[0].replace(/[^+\d]/g, "");
+      document.getElementById("cPhone").textContent = S.phones[0];
+      document.getElementById("cPhone").href = "tel:" + tel;
+      document.getElementById("cMail").textContent = S.email;
+      document.getElementById("cMail").href = "mailto:" + S.email;
+      document.getElementById("cHours").textContent = S.hours;
+      document.getElementById("cTg").textContent = "t.me/" + S.telegram;
+      document.getElementById("cTg").href = "https://t.me/" + S.telegram;
+      document.getElementById("cWa").textContent = "wa.me/" + S.whatsapp;
+      document.getElementById("cWa").href = "https://wa.me/" + S.whatsapp;
+      document.getElementById("cChannel").textContent = "t.me/" + S.telegramChannel;
+      document.getElementById("cChannel").href = "https://t.me/" + S.telegramChannel;
+
+      function mail() {
+        const name = document.getElementById("cName").value.trim();
+        const contact = document.getElementById("cContact").value.trim();
+        const text = document.getElementById("cText").value.trim();
+        if (!name || !contact || !text) { window.Shop.toast("Заполните все поля"); return null; }
+        return "Здравствуйте! Сообщение с сайта " + S.name + ":\nИмя: " + name + "\nКонтакт: " + contact + "\n\n" + text;
+      }
+
+      document.getElementById("cSendTg").addEventListener("click", () => { const m = mail(); if (m) window.Shop.openMessenger("tg", m); });
+      document.getElementById("cSendWa").addEventListener("click", () => { const m = mail(); if (m) window.Shop.openMessenger("wa", m); });
+      document.getElementById("cSendMail").addEventListener("click", () => { const m = mail(); if (m) window.Shop.openMessenger("mail", m); });
+    });
+  </script>
+</body>
+</html>
